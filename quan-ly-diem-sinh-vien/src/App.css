@@ -1,0 +1,67 @@
+.app-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: sans-serif;
+}
+
+.form-container {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-container input {
+  margin-right: 10px;
+  padding: 5px;
+}
+
+.error-text {
+  color: red;
+  font-weight: bold;
+}
+
+.btn {
+  padding: 5px 15px;
+  cursor: pointer;
+}
+
+.filter-container {
+  margin-bottom: 15px;
+}
+
+.filter-btn {
+  margin: 0 10px;
+}
+
+.stats-container {
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.student-table {
+  width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+}
+
+.student-table th, .student-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.delete-btn {
+  color: white;
+  background-color: #ff4d4d;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background-color: #ff1a1a;
+}
