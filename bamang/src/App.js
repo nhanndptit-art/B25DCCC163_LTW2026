@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 import Layout from './components/Layout';
+import Home from './pages/Home';
+import Play from './pages/Play';
+import Result from './pages/Result';
 import QuestionBank from './pages/QuestionBank';
 import QuestionDetail from './pages/QuestionDetail';
 import NotFound from './pages/NotFound';
@@ -11,6 +14,7 @@ const App = () => {
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [playerName, setPlayerName] = useState('');
 
   useEffect(() => {
     const controller = new AbortController();
@@ -39,9 +43,17 @@ const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Layout loading={loading} error={error} />}>
-        <Route index element={<h2>Trang chủ</h2>} />
-        <Route path="play" element={<h2>Màn hình chơi</h2>} />
-        <Route path="result" element={<h2>Kết quả lượt chơi</h2>} />
+        <Route
+          index
+          element={
+            <Home playerName={playerName} onChangeName={setPlayerName} />
+          }
+        />
+        <Route
+          path="play"
+          element={<Play questions={questions} playerName={playerName} />}
+        />
+        <Route path="result" element={<Result />} />
         <Route path="history" element={<h2>Lịch sử các lượt chơi</h2>} />
         <Route
           path="questions"
