@@ -4,11 +4,22 @@ import { LETTERS } from '../data';
 const AnswerButton = ({
   index,
   option,
+  isHidden,
   status,
   isSelected,
   isCorrect,
   onSelect,
 }) => {
+  if (isHidden) {
+    return (
+      <button
+        type="button"
+        className="answer-btn answer-hidden"
+        disabled
+      />
+    );
+  }
+
   let stateClass = '';
   if (status === 'locked' && isSelected) {
     stateClass = 'answer-locked';

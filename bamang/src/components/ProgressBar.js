@@ -11,6 +11,8 @@ const ProgressBar = ({ totalQuestions, results, currentIndex }) => {
           statusClass = 'progress-correct';
         } else if (result === 'wrong') {
           statusClass = 'progress-wrong';
+        } else if (result === 'skipped') {
+          statusClass = 'progress-skipped';
         }
 
         const currentClass = index === currentIndex ? 'progress-current' : '';

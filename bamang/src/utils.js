@@ -18,10 +18,15 @@ export const calcScoreAndStreak = (results, questions) => {
         };
       }
 
-      return {
-        score: acc.score,
-        streak: 0,
-      };
+      if (result === 'wrong') {
+        return {
+          score: acc.score,
+          streak: 0,
+        };
+      }
+
+      // Trường hợp 'skipped': không được điểm, chuỗi đúng giữ nguyên
+      return acc;
     },
     { score: 0, streak: 0 }
   );

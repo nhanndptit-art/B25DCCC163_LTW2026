@@ -1,20 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Play from './pages/Play';
 import Result from './pages/Result';
+import History from './pages/History';
 import QuestionBank from './pages/QuestionBank';
 import QuestionDetail from './pages/QuestionDetail';
 import NotFound from './pages/NotFound';
 import './App.css';
+
+const STORAGE_KEY = 'ltw_3mang_history';
 
 const App = () => {
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [playerName, setPlayerName] = useState('');
+  const [history, setHistory] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      return [];
+    }
+  });
 
   useEffect(() => {
     const controller = new AbortController();
@@ -40,21 +51,51 @@ const App = () => {
     };
   }, []);
 
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+  }, [history]);
+
+  const handleAddHistory = useCallback((newRecord) => {
+    setHistory((prev) => [...prev, newRecord]);
+  }, []);
+
+  const handleClearHistory = useCallback(() => {
+    setHistory([]);
+  }, []);
+
   return (
     <Routes>
       <Route path="/" element={<Layout loading={loading} error={error} />}>
         <Route
           index
           element={
-            <Home playerName={playerName} onChangeName={setPlayerName} />
+            <Home
+              playerName={playerName}
+              onChangeName={setPlayerName}
+              history={history}
+            />
           }
         />
         <Route
           path="play"
-          element={<Play questions={questions} playerName={playerName} />}
+          element={
+            <Play
+              questions={questions}
+              playerName={playerName}
+              onAddHistory={handleAddHistory}
+            />
+          }
         />
         <Route path="result" element={<Result />} />
-        <Route path="history" element={<h2>Lịch sử các lượt chơi</h2>} />
+        <Route
+          path="history"
+          element={
+            <History
+              history={history}
+              onClearHistory={handleClearHistory}
+            />
+          }
+        />
         <Route
           path="questions"
           element={<QuestionBank questions={questions} />}

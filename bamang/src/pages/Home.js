@@ -1,8 +1,19 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { formatScore } from '../data';
 
-const Home = ({ playerName, onChangeName }) => {
+const Home = ({ playerName, onChangeName, history }) => {
   const navigate = useNavigate();
+
+  const bestRecord =
+    history.length > 0
+      ? [...history].sort((a, b) => {
+          if (b.score !== a.score) {
+            return b.score - a.score;
+          }
+          return b.livesLeft - a.livesLeft;
+        })[0]
+      : null;
 
   const handleStart = (e) => {
     e.preventDefault();
@@ -23,9 +34,16 @@ const Home = ({ playerName, onChangeName }) => {
           <li>Trả lời đúng được cộng điểm theo mức độ: Dễ (100 điểm), Trung bình (200 điểm), Khó (300 điểm).</li>
           <li>Từ câu đúng thứ 3 liên tiếp trở đi, mỗi câu đúng được thưởng thêm <strong>50 điểm</strong>.</li>
           <li>Trả lời sai bị trừ 1 mạng, chuỗi đúng về 0 nhưng vẫn đi tiếp.</li>
-          <li>Lượt chơi kết thúc khi trả lời xong 15 câu, hết mạng hoặc hết giờ.</li>
+          <li>Bạn có 3 quyền trợ giúp: <strong>50:50</strong>, <strong>Bỏ qua</strong>, <strong>Thêm 1 mạng</strong> (mỗi quyền dùng 1 lần).</li>
+          <li>Có thể dùng phím tắt <strong>A, B, C, D</strong> trên bàn phím để chọn đáp án nhanh.</li>
         </ul>
       </div>
+
+      {bestRecord && (
+        <div className="record-banner">
+          {`Kỷ lục: ${formatScore(bestRecord.score)} – ${bestRecord.name}`}
+        </div>
+      )}
 
       <form onSubmit={handleStart} className="start-form">
         <label htmlFor="playerNameInput">Tên người chơi:</label>
